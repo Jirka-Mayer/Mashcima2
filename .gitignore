@@ -1,0 +1,12 @@
+# editors
+/.vscode/
+/.idea/
+
+# python package build
+/build/
+/dist/
+*.egg-info
+
+# python
+__pycache__
+*.pyc
