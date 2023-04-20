@@ -1,6 +1,8 @@
 from .foo import foo
 from .quilt import quilt
 #import time
+from PIL import Image
+from skimage import util
 
 # Lanuch me via:
 # python3 -m mashcima2.postprocessing
@@ -10,8 +12,14 @@ print("Hello world, this is postprocessing!")
 
 #start = time.time()
 
-image_path = ".\\mashcima2\\postprocessing\\apple.jpg"
-block_size = 50
+image_path = ".\\mashcima2\\postprocessing\\default1.jpg"
+
+image = Image.open(image_path)
+image = util.img_as_float(image)
+
+h, w, _ = image.shape
+
+block_size = (min(h, w) - 1) // 2
 num_block = 6
 #mode = "Random"
 #mode = "Best"
