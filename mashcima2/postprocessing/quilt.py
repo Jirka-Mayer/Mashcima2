@@ -5,7 +5,13 @@ from PIL import Image
 from skimage import util
 
 
-def quilt(image_path, block_size, num_block, mode, sequence=False):
+def quilt(
+        image_path: str, 
+        block_size: int, 
+        num_block: int, 
+        mode: str, 
+        sequence: bool=False
+) -> Image:
     texture = Image.open(image_path)
     texture = util.img_as_float(texture)
 

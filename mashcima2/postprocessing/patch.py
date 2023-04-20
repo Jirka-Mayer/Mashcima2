@@ -1,9 +1,13 @@
 import numpy as np
 import heapq
+# import matplotlib.pyplot as plt
 
 
-# Function for mode: Random.
-def randomPatch(texture, block_size):
+def randomPatch(
+        texture: np.ndarray, 
+        block_size: int
+) -> np.ndarray:
+    """Function for mode: Random."""
     h, w, _ = texture.shape
     i = np.random.randint(h - block_size)
     j = np.random.randint(w - block_size)
@@ -11,8 +15,15 @@ def randomPatch(texture, block_size):
     return texture[i:i+block_size, j:j+block_size]
 
 
-# Help function for mode: Best.
-def L2OverlapDiff(patch, block_size, overlap, res, y, x):
+def L2OverlapDiff(
+        patch: np.ndarray, 
+        block_size: int, 
+        overlap: int, 
+        res: np.ndarray, 
+        y: int, 
+        x: int
+) -> float:
+    """Help function for mode: Best."""
     error = 0
     if x > 0:
         left = patch[:, :overlap] - res[y:y+block_size, x:x+overlap]
@@ -28,8 +39,15 @@ def L2OverlapDiff(patch, block_size, overlap, res, y, x):
 
     return error
 
-# Function for mode: Best.
-def randomBestPatch(texture, block_size, overlap, res, y, x):
+def randomBestPatch(
+        texture: np.ndarray, 
+        block_size: int, 
+        overlap: int, 
+        res: np.ndarray, 
+        y: int, 
+        x: int
+) -> np.ndarray:
+    """Function for mode: Best."""
     h, w, _ = texture.shape
     errors = np.zeros((h - block_size, w - block_size))
 
@@ -38,13 +56,16 @@ def randomBestPatch(texture, block_size, overlap, res, y, x):
             patch = texture[i:i+block_size, j:j+block_size]
             e = L2OverlapDiff(patch, block_size, overlap, res, y, x)
             errors[i, j] = e
+    
+    # plt.imshow(errors)
+    # plt.show()
 
     i, j = np.unravel_index(np.argmin(errors), errors.shape)
     return texture[i:i+block_size, j:j+block_size]
 
 
-# Help function for mode: Cut.
-def minCutPath(errors):
+def minCutPath(errors: np.ndarray):
+    """Help function for mode: Cut."""
     # dijkstra's algorithm vertical
     pq = [(error, [i]) for i, error in enumerate(errors[0])]
     heapq.heapify(pq)
@@ -69,8 +90,15 @@ def minCutPath(errors):
                     heapq.heappush(pq, (cumError, path + [nextIndex]))
                     seen.add((curDepth, nextIndex))
 
-# Function for mode: Cut.
-def minCutPatch(patch, block_size, overlap, res, y, x):
+def minCutPatch(
+        patch: np.ndarray, 
+        block_size: int, 
+        overlap: int, 
+        res: np.ndarray, 
+        y: int, 
+        x: int
+) -> np.ndarray:
+    """Function for mode: Cut."""
     patch = patch.copy()
     dy, dx, _ = patch.shape
     minCut = np.zeros_like(patch, dtype=bool)
