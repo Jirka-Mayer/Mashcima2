@@ -1,6 +1,7 @@
 from .foo import foo
 from .quilt import quilt
 from .seep import seep_image, layer_images, prepare_back_side
+from .bend import bend_image
 #import time
 from PIL import Image
 from skimage import util
@@ -12,16 +13,23 @@ import cv2
 print("Hello world, this is postprocessing!")
 #print("Foo is:", foo())
 
+# Launching the bend:
+image = cv2.imread("mashcima2/postprocessing/default.jpg")
+bended_image = bend_image(image)
+cv2.imshow("Bended", bended_image)
+cv2.waitKey(0)
+
+
 
 # Launching the seep:
-back_side = cv2.imread("mashcima2/postprocessing/noty.png")
-backgroung_from_quilt = cv2.imread("mashcima2/postprocessing/generated_background.png")
-front_side = cv2.imread("mashcima2/postprocessing/noty.png")
+# back_side = cv2.imread("mashcima2/postprocessing/noty.png")
+# backgroung_from_quilt = cv2.imread("mashcima2/postprocessing/generated_background.png")
+# front_side = cv2.imread("mashcima2/postprocessing/noty.png")
 
-seeped_image = seep_image(back_side, backgroung_from_quilt, front_side)
+# seeped_image = seep_image(back_side, backgroung_from_quilt, front_side)
 
-cv2.imshow("Seeped", seeped_image)
-cv2.waitKey(0)
+# cv2.imshow("Seeped", seeped_image)
+# cv2.waitKey(0)
 
 
 
