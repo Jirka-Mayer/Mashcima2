@@ -13,11 +13,13 @@ import cv2
 print("Hello world, this is postprocessing!")
 #print("Foo is:", foo())
 
+
 # Launching the bend:
-image = cv2.imread("mashcima2/postprocessing/default.jpg")
+image = cv2.imread("mashcima2/postprocessing/noty.png")
 bended_image = bend_image(image)
 cv2.imshow("Bended", bended_image)
 cv2.waitKey(0)
+
 
 
 
@@ -30,6 +32,7 @@ cv2.waitKey(0)
 
 # cv2.imshow("Seeped", seeped_image)
 # cv2.waitKey(0)
+
 
 
 
