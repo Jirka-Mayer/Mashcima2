@@ -20,7 +20,6 @@ def bend_image(
     gradient = 1/6              
 
     # Bending the image.
-
     for row in range(image.shape[0]):
         for column in range(image.shape[1]):
             map_x[row, column] = column         
@@ -35,6 +34,30 @@ def bend_image(
             # The "straight" part of the paper from the book. Using linear function.
             if column > image.shape[1] * part_of_image_to_bend:
                 map_y[row, column]  = row - column * gradient + constant
+
+    image = cv2.remap(image, map_x, map_y, cv2.INTER_LINEAR)
+
+    return image
+
+
+def bevel_image(
+    image: np.ndarray,
+) -> np.ndarray: 
+    """ """
+    map_x = np.zeros((image.shape[0], image.shape[1]), dtype=np.float32)
+    map_y = np.zeros((image.shape[0], image.shape[1]), dtype=np.float32)
+
+    # The gradient of the linear function.
+    gradient = -1/10   
+
+    # The constant to add to the linear function to center the stave.
+    constant = image.shape[1] * gradient / 2    
+
+    # Beveling the stave.
+    for row in range(image.shape[0]):
+        for column in range(image.shape[1]):
+            map_x[row, column] = column         
+            map_y[row, column]  = row - column * gradient + constant
 
     image = cv2.remap(image, map_x, map_y, cv2.INTER_LINEAR)
 
