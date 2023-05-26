@@ -43,7 +43,7 @@ def bend_image(
 def bevel_image(
     image: np.ndarray,
 ) -> np.ndarray: 
-    """ """
+    """ Bevels the stave on the image as it was wrongly printed. """
     map_x = np.zeros((image.shape[0], image.shape[1]), dtype=np.float32)
     map_y = np.zeros((image.shape[0], image.shape[1]), dtype=np.float32)
 
@@ -60,5 +60,28 @@ def bevel_image(
             map_y[row, column]  = row - column * gradient + constant
 
     image = cv2.remap(image, map_x, map_y, cv2.INTER_LINEAR)
+
+    return image
+
+
+def change_perspective(
+    image: np.ndarray,
+) -> np.ndarray: 
+    """ Changes the perspective of the image as the picture was taken from specific angle. """
+    
+    rows = image.shape[0]
+    columns = image.shape[1]
+ 
+    # Defining the corners as four points on input image.
+    corners_original = np.float32([[0, 0], [columns - 1, 0], [0, rows - 1], [columns - 1, rows - 1]])
+
+    # Defining the new positions of corners on output image.
+    corners_new = np.float32([[columns/10, 0], [9*columns/10, 0], [0, rows - 1], [columns - 1, rows - 1]])
+
+    # Getting the perspective transform matrix.
+    transform_matrix = cv2.getPerspectiveTransform(corners_original,corners_new)
+
+    # Applying the perspective transformation.
+    image = cv2.warpPerspective(image, transform_matrix, (image.shape[1], image.shape[0]))
 
     return image

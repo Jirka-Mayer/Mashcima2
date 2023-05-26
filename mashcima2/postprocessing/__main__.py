@@ -1,7 +1,7 @@
 from .foo import foo
 from .quilt import quilt
 from .seep import seep_image, layer_images, prepare_back_side
-from .geom_deformations import bend_image, bevel_image
+from .geom_deformations import bend_image, bevel_image, change_perspective
 #import time
 from PIL import Image
 from skimage import util
@@ -17,8 +17,9 @@ print("Hello world, this is postprocessing!")
 # Launching the bending, beveling and:
 image = cv2.imread("mashcima2/postprocessing/noty.png")
 #image = bend_image(image)
-image = bevel_image(image)
-cv2.imshow("Bended", image)
+#image = bevel_image(image)
+image = change_perspective(image)
+cv2.imshow("", image)
 cv2.waitKey(0)
 
 
