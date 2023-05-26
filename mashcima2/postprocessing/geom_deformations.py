@@ -44,6 +44,7 @@ def bevel_image(
     image: np.ndarray,
 ) -> np.ndarray: 
     """ Bevels the stave on the image as it was wrongly printed. """
+    
     map_x = np.zeros((image.shape[0], image.shape[1]), dtype=np.float32)
     map_y = np.zeros((image.shape[0], image.shape[1]), dtype=np.float32)
 
