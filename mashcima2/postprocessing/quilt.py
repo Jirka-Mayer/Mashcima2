@@ -36,6 +36,12 @@ def quilt(
                 patch = randomBestPatch(texture, block_size, overlap, res, y, x)
                 patch = minCutPatch(patch, block_size, overlap, res, y, x)
             
+            # Kompromis: rychlý sample a čistý střih
+            # Na šumové textury pozadí to stačí. Jirka.
+            elif mode == "RandomCut":
+                patch = randomPatch(texture, block_size)
+                patch = minCutPatch(patch, block_size, overlap, res, y, x)
+            
             res[y:y+block_size, x:x+block_size] = patch
     
     image = Image.fromarray((res * 255).astype(np.uint8))
