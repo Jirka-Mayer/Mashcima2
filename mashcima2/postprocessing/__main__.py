@@ -15,9 +15,11 @@ print("Hello world, this is postprocessing!")
 #print("Foo is:", foo())
 
 
+
+
 # Launching the augmentation of handwritting:
 image = cv2.imread("mashcima2/postprocessing/noty.png")
-image = augment(image)
+image = augment(image, -1)
 cv2.imshow("", image)
 cv2.waitKey(0)
 
@@ -25,7 +27,7 @@ cv2.waitKey(0)
 
 
 # Launching the bending, beveling and changing perspective:
-image = cv2.imread("mashcima2/postprocessing/noty.png")
+#image = cv2.imread("mashcima2/postprocessing/noty.png")
 #image = bend_image(image)
 #image = bevel_image(image)
 #image = change_perspective(image)
