@@ -3,6 +3,7 @@ from .quilt import quilt
 from .seep import seep_image, layer_images, prepare_back_side
 from .geom_deformations import bend_image, bevel_image, change_perspective
 from .handwriting_augmentation import augment
+from .noise import kanungo
 #import time
 from PIL import Image
 from skimage import util
@@ -17,11 +18,19 @@ print("Hello world, this is postprocessing!")
 
 
 
-# Launching the augmentation of handwritting:
+# Launching the noise operations:
 image = cv2.imread("mashcima2/postprocessing/noty.png")
-image = augment(image, -1)
+image = kanungo(image)
 cv2.imshow("", image)
 cv2.waitKey(0)
+
+
+
+# Launching the augmentation of handwritting:
+#image = cv2.imread("mashcima2/postprocessing/noty.png")
+#image = augment(image, -1)
+#cv2.imshow("", image)
+#cv2.waitKey(0)
 
 
 
