@@ -16,13 +16,21 @@ print("Hello world, this is postprocessing!")
 #print("Foo is:", foo())
 
 
+# Launching the background generator via the class (correct API):
+from mashcima2.postprocessing.BackgroundGenerator import BackgroundGenerator
+generator = BackgroundGenerator("data/backgrounds/samples.csv", )
+img = generator.generate(1024, 1024, 150)
+print(img)
+#img = Image.fromarray(img).show()
+
+
 
 
 # Launching the noise operations:
-image = cv2.imread("mashcima2/postprocessing/noty.png")
-image = kanungo(image)
-cv2.imshow("", image)
-cv2.waitKey(0)
+# image = cv2.imread("mashcima2/postprocessing/noty.png")
+# image = kanungo(image)
+# cv2.imshow("", image)
+# cv2.waitKey(0)
 
 
 
@@ -62,20 +70,21 @@ cv2.waitKey(0)
 # Launching the quilt:
 #start = time.time()
 
-image_path = ".\\mashcima2\\postprocessing\\default1.jpg"
+# image_path = ".\\mashcima2\\postprocessing\\default1.jpg"
 
-foreground = Image.open(image_path)
-foreground = util.img_as_float(foreground)
+# foreground = Image.open(image_path)
+# foreground = util.img_as_float(foreground)
 
-h, w, _ = foreground.shape
+# h, w, _ = foreground.shape
 
-block_size = (min(h, w) - 1) // 2
-num_block = 6
-#mode = "Random"
-#mode = "Best"
-mode = "Cut"
+# block_size = (min(h, w) - 1) // 2
+# num_block = 6
+# #mode = "Random"
+# #mode = "Best"
+# #mode = "Cut"
+# mode = "RandomCut"
 
-#quilt(image_path, block_size, (num_block, num_block), mode).show()
+# quilt(image_path, block_size, (num_block, num_block), mode).show()
 
 #end = time.time()
 #print(end - start)

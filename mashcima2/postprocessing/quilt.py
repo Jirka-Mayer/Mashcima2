@@ -4,7 +4,6 @@ import numpy as np
 from PIL import Image
 from skimage import util
 
-
 def quilt(
         image_path: str, 
         block_size: int, 
@@ -15,7 +14,7 @@ def quilt(
     texture = Image.open(image_path)
     texture = util.img_as_float(texture)
 
-    overlap = block_size // 6
+    overlap = block_size // max(num_block)
     num_blockHigh, num_blockWide = num_block
 
     h = (num_blockHigh * block_size) - (num_blockHigh - 1) * overlap
@@ -46,4 +45,3 @@ def quilt(
     
     image = Image.fromarray((res * 255).astype(np.uint8))
     return image
-
