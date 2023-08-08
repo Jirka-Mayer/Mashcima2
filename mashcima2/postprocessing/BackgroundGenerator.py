@@ -5,6 +5,8 @@ import heapq
 from skimage import util
 from PIL import Image
 
+from data.backgrounds.download_images import download
+
 
 class BackgroundGenerator:
     def __init__(
@@ -17,7 +19,8 @@ class BackgroundGenerator:
         """
         self.images_csv_path = images_csv_path
         self.rand = random.Random() if rand is None else rand
-        self.part_of_image_for_block_size = part_of_image_for_block_size        
+        self.part_of_image_for_block_size = part_of_image_for_block_size
+        self.images = download(images_csv_path) 
     
     def randomPatch(
         self,
@@ -97,8 +100,10 @@ class BackgroundGenerator:
         """
         Generates a background image.
         """
-        texture = random.choice([x for x in os.listdir("data/backgrounds/images/") if not x.startswith(".")])
-        texture = Image.open("data/backgrounds/images/" + texture) #TODO: do somehow differently without PIL maybe?
+        #texture = random.choice([x for x in os.listdir("data/backgrounds/images/") if not x.startswith(".")])
+        texture = random.choice(self.images)
+        #texture = Image.open("data/backgrounds/images/" + texture) #TODO: do somehow differently without PIL maybe?
+        texture = Image.open(texture) #TODO: do somehow differently without PIL maybe?
         texture = util.img_as_float(texture) #TODO: do somehow differently without skimage maybe?
 
         h, w, _ = texture.shape
