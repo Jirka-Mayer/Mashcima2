@@ -1,9 +1,7 @@
 import numpy as np
 import random
-import os
 import heapq
-from skimage import util
-from PIL import Image
+import cv2
 
 from data.backgrounds.download_images import download
 
@@ -26,6 +24,9 @@ class BackgroundGenerator:
         texture: np.ndarray, 
         block_size: int
     ) -> np.ndarray:
+        """
+        Returns a random patch of the given texture.
+        """
         h, w, _ = texture.shape
         i = np.random.randint(h - block_size)
         j = np.random.randint(w - block_size)
@@ -64,7 +65,6 @@ class BackgroundGenerator:
     def minCutPatch(
         self,
         patch: np.ndarray, 
-        block_size: int, 
         overlap: int, 
         res: np.ndarray, 
         y: int, 
@@ -107,9 +107,8 @@ class BackgroundGenerator:
             raise Exception(f"No textures in file {self.images_csv_path} with dpi >= {dpi} found.")
         
         # Choosing a random texture from the valid ones.
-        texture = random.choice(valid_textures)
-        texture = Image.open(texture) #TODO: do somehow differently without PIL maybe?
-        texture = util.img_as_float(texture) #TODO: do somehow differently without skimage maybe?
+        texture = self.rand.choice(valid_textures)
+        texture = cv2.imread(texture).astype(np.float32) / 255.0
 
         h, w, _ = texture.shape
         block_size = int((min(h, w) - 1) * self.part_of_image_for_block_size)
@@ -130,7 +129,7 @@ class BackgroundGenerator:
 
                 # Fast sample and clean cut.
                 patch = self.randomPatch(texture, block_size)
-                patch = self.minCutPatch(patch, block_size, overlap, result, y, x)
+                patch = self.minCutPatch(patch, overlap, result, y, x)
                 
                 result[y:y+block_size, x:x+block_size] = patch
         

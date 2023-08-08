@@ -5,8 +5,6 @@ from .geom_deformations import bend_image, bevel_image, change_perspective
 from .handwriting_augmentation import augment
 from .noise import kanungo
 #import time
-from PIL import Image
-from skimage import util
 import cv2
 
 # Lanuch me via:
@@ -16,13 +14,14 @@ print("Hello world, this is postprocessing!")
 #print("Foo is:", foo())
 
 
+
 # Launching the background generator via the class (correct API):
 from mashcima2.postprocessing.BackgroundGenerator import BackgroundGenerator
 generator = BackgroundGenerator("data/backgrounds/samples.csv", )
 img = generator.generate(1024, 1024, 150)
 print(img)
-img = Image.fromarray(img).show()   #TODO: this is just for testing, make comment from it later
-
+cv2.imshow("", img)   
+cv2.waitKey(0)
 
 
 

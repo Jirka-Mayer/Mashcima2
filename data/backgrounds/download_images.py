@@ -7,7 +7,6 @@ def download(
     """
     Downloads images from kramerius.mzk.cz
     """
-
     images = []
 
     with open(images_csv_path, "r") as csv_file:
