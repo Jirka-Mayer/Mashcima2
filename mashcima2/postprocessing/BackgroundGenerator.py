@@ -7,7 +7,6 @@ from PIL import Image
 
 from data.backgrounds.download_images import download
 
-
 class BackgroundGenerator:
     def __init__(
         self,
@@ -100,9 +99,15 @@ class BackgroundGenerator:
         """
         Generates a background image.
         """
-        #texture = random.choice([x for x in os.listdir("data/backgrounds/images/") if not x.startswith(".")])
-        texture = random.choice(self.images)
-        #texture = Image.open("data/backgrounds/images/" + texture) #TODO: do somehow differently without PIL maybe?
+        # Sorting just dpi-valid textures.
+        valid_textures = [x for x in self.images if int(x.split("_")[-1][:-4]) >= dpi] 
+
+        # If no textures with dpi >= dpi are found, raising an exception.
+        if len(valid_textures) == 0:
+            raise Exception(f"No textures in file {self.images_csv_path} with dpi >= {dpi} found.")
+        
+        # Choosing a random texture from the valid ones.
+        texture = random.choice(valid_textures)
         texture = Image.open(texture) #TODO: do somehow differently without PIL maybe?
         texture = util.img_as_float(texture) #TODO: do somehow differently without skimage maybe?
 

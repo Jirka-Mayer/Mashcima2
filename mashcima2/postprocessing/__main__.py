@@ -21,7 +21,7 @@ from mashcima2.postprocessing.BackgroundGenerator import BackgroundGenerator
 generator = BackgroundGenerator("data/backgrounds/samples.csv", )
 img = generator.generate(1024, 1024, 150)
 print(img)
-#img = Image.fromarray(img).show()
+img = Image.fromarray(img).show()   #TODO: this is just for testing, make comment from it later
 
 
 
