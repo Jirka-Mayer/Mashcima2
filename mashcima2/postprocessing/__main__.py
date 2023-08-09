@@ -18,10 +18,10 @@ print("Hello world, this is postprocessing!")
 # Launching the background generator via the class (correct API):
 from mashcima2.postprocessing.BackgroundGenerator import BackgroundGenerator
 generator = BackgroundGenerator("data/backgrounds/samples.csv", )
-img = generator.generate(1024, 1024, 150)
+img = generator.generate(1024, 1024, 30)
 print(img)
-cv2.imshow("", img)   
-cv2.waitKey(0)
+# cv2.imshow("", img)   
+# cv2.waitKey(0)
 
 
 

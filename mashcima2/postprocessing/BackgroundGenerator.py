@@ -10,13 +10,15 @@ class BackgroundGenerator:
         self,
         images_csv_path: str,
         rand = None,
-        part_of_image_for_block_size: float = 1/3): #TODO: part_of_image_for_block_size should be in generate function or here?
+        part_of_image_for_block_size: float = 1/3,
+        overlap_ratio: float = 0.1):
         """
         Creates a new background generator with optional parameters.
         """
         self.images_csv_path = images_csv_path
         self.rand = random.Random() if rand is None else rand
         self.part_of_image_for_block_size = part_of_image_for_block_size
+        self.overlap_ratio = overlap_ratio
         self.images = download(images_csv_path) 
     
     def randomPatch(
@@ -107,15 +109,23 @@ class BackgroundGenerator:
             raise Exception(f"No textures in file {self.images_csv_path} with dpi >= {dpi} found.")
         
         # Choosing a random texture from the valid ones.
-        texture = self.rand.choice(valid_textures)
-        texture = cv2.imread(texture).astype(np.float32) / 255.0
+        texture_path = self.rand.choice(valid_textures)
+        #texture_path = "./data/backgrounds/images/6cfd34b3-cfdf-41b7-9c37-0b8466ab8880_176_132_397_459_150.jpg"
+        texture_dpi = int(texture_path.split("_")[-1][:-4])
+
+        texture = cv2.imread(texture_path).astype(np.float32) / 255.0
+        scale_factor = dpi / texture_dpi
+        dsize = (int(texture.shape[1] * scale_factor), int(texture.shape[0] * scale_factor))
+        texture = cv2.resize(texture, dsize, interpolation=cv2.INTER_AREA)
 
         h, w, _ = texture.shape
         block_size = int((min(h, w) - 1) * self.part_of_image_for_block_size)
 
-        num_blockHigh = height_px // block_size + 2
-        num_blockWide = width_px // block_size + 2
-        overlap = block_size // max(num_blockHigh, num_blockWide)
+        overlap = int(block_size * self.overlap_ratio)
+        if overlap == 0:
+            raise Exception("Overlap is 0px.")
+        num_blockHigh = height_px // (block_size - overlap) + 2
+        num_blockWide = width_px // (block_size - overlap) + 2
 
         h = (num_blockHigh * block_size) - (num_blockHigh - 1) * overlap
         w = (num_blockWide * block_size) - (num_blockWide - 1) * overlap
@@ -134,6 +144,10 @@ class BackgroundGenerator:
                 result[y:y+block_size, x:x+block_size] = patch
         
         result = (result * 255).astype(np.uint8)
-        result = result[:height_px, :width_px]
+        over_height = result.shape[0] - height_px
+        over_width = result.shape[1] - width_px
+        offset_height = self.rand.randint(0, over_height)
+        offset_width = self.rand.randint(0, over_width)
+        result = result[offset_height:height_px + offset_height, offset_width:width_px + offset_width]
         return result
     
